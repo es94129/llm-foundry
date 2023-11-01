@@ -325,10 +325,10 @@ def main(cfg: DictConfig):
             print(
                 eval_gauntlet_df.sort_values(
                     list(eval_gauntlet_callback.averages.keys())[0],
-                    ascending=False).to_markdown(index=False))
+                    ascending=False).to_json(orient='records'))
         print(f'Printing complete results for all models')
         assert models_df is not None
-        print(models_df.to_markdown(index=False))
+        print(models_df.to_json(orient='records'))
         print('Completed')
 
 

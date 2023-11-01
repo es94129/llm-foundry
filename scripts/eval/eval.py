@@ -325,10 +325,11 @@ def main(cfg: DictConfig):
             print(
                 eval_gauntlet_df.sort_values(
                     list(eval_gauntlet_callback.averages.keys())[0],
-                    ascending=False).to_markdown(index=False))
+                    ascending=False).to_json(index=False))
         print(f'Printing complete results for all models')
         assert models_df is not None
-        print(models_df.to_markdown(index=False))
+        print(models_df.to_json(index=False))
+        print('Completed')
 
 
 def calculate_markdown_results(logger_keys: List[str], trainer: Trainer,
@@ -375,34 +376,19 @@ def calculate_markdown_results(logger_keys: List[str], trainer: Trainer,
                     row = {
                         'Category': benchmark_to_taxonomy.get(benchmark, ''),
                         'Benchmark': benchmark,
-                        'Subtask': None,
+                        'Subtask': 'All',
                         'Accuracy': subscores[0]['val'],
                         'Number few shot': num_shot,
                         'Model': model_name
                     }
                     df = pd.concat([df, pd.DataFrame([row])], ignore_index=True)
                 else:
-                    row = {
-                        'Category':
-                            benchmark_to_taxonomy.get(benchmark, ''),
-                        'Benchmark':
-                            benchmark,
-                        'Subtask':
-                            'Average',
-                        'Accuracy':
-                            sum(s['val'] for s in subscores) / len(subscores),
-                        'Number few shot':
-                            num_shot,
-                        'Model':
-                            model_name
-                    }
-                    df = pd.concat([df, pd.DataFrame([row])], ignore_index=True)
                     for sub in subscores:
                         row = {
                             'Category':
                                 benchmark_to_taxonomy.get(benchmark, ''),
                             'Benchmark':
-                                None,
+                                benchmark,
                             'Subtask':
                                 sub['subcat'],
                             'Accuracy':

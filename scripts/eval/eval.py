@@ -173,6 +173,7 @@ def evaluate_model(
         log_to_console=True,
         dist_timeout=dist_timeout,
         python_log_level=python_log_level,
+        console_stream="stdout",
     )
 
     if torch.cuda.is_available():
